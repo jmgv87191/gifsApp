@@ -13,6 +13,7 @@ export class GifsService {
   private apiKey: string = "YUDb7YNb56Pdc54Av2nUrN5DtZcQenHX"
   private api: string = 'https://api.giphy.com/v1/gifs/search?api_key=YUDb7YNb56Pdc54Av2nUrN5DtZcQenHX&q='
 
+
   constructor( private http: HttpClient ) { }
 
   get tagHistory(){
@@ -38,14 +39,11 @@ searchTag( tag: string ):void{
   this.organizeHistory(tag)
 
 
-  this.http.get<SearchResponse>( this.api ).subscribe( resp  => {
-
+  this.http.get<SearchResponse>( `${this.api}${tag}&limit=10`  ).subscribe( resp  => {
 
     this.gifList = resp.data;
 
     console.log( {gifs: this.gifList} )
-
-
 
   } )
 }
