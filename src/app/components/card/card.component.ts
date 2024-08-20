@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Gif } from '../../interfaces/gifs';
+import { LazyImageComponent } from '../lazy-image/lazy-image.component';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [],
+  imports: [LazyImageComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
 })
