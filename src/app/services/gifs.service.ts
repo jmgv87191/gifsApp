@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Gif, SearchResponse } from '../interfaces/gifs';
 
 @Injectable({
@@ -14,7 +14,10 @@ export class GifsService {
   private api: string = 'https://api.giphy.com/v1/gifs/search?api_key=YUDb7YNb56Pdc54Av2nUrN5DtZcQenHX&q='
 
 
-  constructor( private http: HttpClient ) { }
+  constructor( private http: HttpClient ) { 
+    this.loadLocalStorage()
+  }
+
 
   get tagHistory(){
     return [...this._tagHistory]
@@ -30,7 +33,20 @@ export class GifsService {
 
     this._tagHistory.unshift( tag )
     this._tagHistory = this._tagHistory.splice(0,10)
+    this.saveLocalStorage();
+  }
 
+  private saveLocalStorage():void{
+    localStorage.setItem( 'history',JSON.stringify (this._tagHistory) );
+  }
+  private loadLocalStorage(): void {
+    if (typeof window !== 'undefined' && localStorage.getItem('history')) {
+      this._tagHistory = JSON.parse(localStorage.getItem('history')!);
+    
+      if (this._tagHistory.length > 0) {
+        this.searchTag(this.tagHistory[0]);
+      }
+    }
   }
 
 searchTag( tag: string ):void{
@@ -48,5 +64,6 @@ searchTag( tag: string ):void{
   } )
 }
 
+
+
 }
-9
